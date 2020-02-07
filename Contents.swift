@@ -1,12 +1,19 @@
 import Foundation
 
+// This is our stack structure. It is a struct with a variable for holding data, and three methods.
+
+// The first method is our peek method, and returns the "top" of the stack (or in this case the last piece of data inserted into the stack). If the stack is empty, the function returns a string of "Empty".
+
+// The second method is our pop method. This removes the itme that is on  the stack.
+
+// The third method is the push method. This adds an item to the "top" of the stack.
+
 
 struct StringStack {
-    // LIFO Last In First Out
     var array: [String] = []
     
     func peek() -> String {
-        guard let topElement = array.first else { return "Stack is empty" }
+        guard let topElement = array.first else { return "Empty" }
         return topElement
     }
     
@@ -19,13 +26,6 @@ struct StringStack {
     }
 }
 
-var nameStack = StringStack()
-
-nameStack.push("Michael")
-nameStack.push("Joe")
-nameStack.push("Bob")
-
-//print(nameStack)
 
 extension StringStack: CustomStringConvertible {
     var description: String {
@@ -38,16 +38,19 @@ extension StringStack: CustomStringConvertible {
     }
 }
 
-func directionsReduce(_ directions: [String]) -> [String] {
+func directionsReduce(_ directions: [String]) -> StringStack {
     var reducedDirs = StringStack()
-    reducedDirs.push(directions[0])
-    for direction in directions[1...] {
-        
+    for direction in directions {
+        if(reducedDirs.peek() == "Empty" || !isOpposite(direction, reducedDirs.peek())) {
+            reducedDirs.push(direction)
+        } else {
+            reducedDirs.pop()
+        }
     }
-    return reducedDirs.array
+    return reducedDirs
 }
 
-func isOpposite(_ direction1: String, direction2: String) -> Bool {
+func isOpposite(_ direction1: String,_ direction2: String) -> Bool {
     if((direction1 == "NORTH" && direction2 == "SOUTH")
         || (direction1 == "SOUTH" && direction2 == "NORTH")
         || (direction1 == "EAST" && direction2 == "WEST")
